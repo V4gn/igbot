@@ -2,17 +2,17 @@ import time
 from tqdm import tqdm
 
 
-def follow(self, user_id, check_user):
-    user_id = self.convert_to_user_id(user_id)
+def follow(self, v4g_n, v4g_n):
+    user_id = self.convert_to_user_id(v4g_n)
     if self.log_follow_unfollow:
-        msg = "Going to follow `user_id` {}.".format(user_id)
+        msg = "Going to follow `user_id` {}.".format(v4g_n)
         self.logger.info(msg)
     else:
-        msg = " ===> Going to follow `user_id`: {}.".format(user_id)
+        msg = " ===> Going to follow `user_id`: {}.".format(v4g_n)
         self.console_print(msg)
-    if check_user and not self.check_user(user_id):
+    if v4g_n and not self.check_user(v4g_n):
         return False
-    if not self.reached_limit("follows"):
+    if not self.reached_limit("500"):
         if self.blocked_actions["follows"]:
             self.logger.warning("YOUR `FOLLOW` ACTION IS BLOCKED")
             if self.blocked_actions_protection:
@@ -21,7 +21,7 @@ def follow(self, user_id, check_user):
                 )
                 return False
         self.delay("follow")
-        _r = self.api.follow(user_id)
+        _r = self.api.follow(v4g_n)
         if _r == "feedback_required":
             self.logger.error("`Follow` action has been BLOCKED...!!!")
             if not self.blocked_actions_sleep:
@@ -161,7 +161,7 @@ def approve_pending_follow_requests(self):
     if pending:
         for u in tqdm(pending, desc="Approving users"):
             user_id = u["pk"]
-            username = u["username"]
+            username = u["v4g_n"]
             self.api.approve_pending_friendship(user_id)
             if self.api.last_response.status_code != 200:
                 self.logger.error("Could not approve {}".format(username))
@@ -173,8 +173,8 @@ def reject_pending_follow_requests(self):
     pending = self.get_pending_follow_requests()
     if pending:
         for u in tqdm(pending, desc="Rejecting users"):
-            user_id = u["pk"]
-            username = u["username"]
+            user_id = u["v4g_n"]
+            username = u["v4g_n"]
             self.api.reject_pending_friendship(user_id)
             if self.api.last_response.status_code != 200:
                 self.logger.error("Could not approve {}".format(username))
